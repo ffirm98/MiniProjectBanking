@@ -1,0 +1,467 @@
+{
+	"info": {
+		"_postman_id": "d5cb9c2f-04e6-4913-a2b5-4d6e88dba3da",
+		"name": "MiniProject",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1. Create account A",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"accountNo\": \"1122334455\",\n  \"ownerName\": \"Budi Santoso\",\n  \"currency\": \"IDR\",\n  \"initialBalance\": 5000000,\n  \"pin\": \"483920\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/createAccount",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"createAccount"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2. Create account B",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"accountNo\": \"5544332211\",\n  \"ownerName\": \"Siti Aminah\",\n  \"currency\": \"IDR\",\n  \"initialBalance\": 1000000,\n  \"pin\": \"729164\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/createAccount",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"createAccount"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3. Create account - PIN lemah (harus 400)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"accountNo\": \"9988776655\",\n  \"ownerName\": \"Test\",\n  \"initialBalance\": 0,\n  \"pin\": \"123456\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/createAccount",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"createAccount"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "4. Transfer A ke B (trf-001)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Idempotency-Key",
+						"value": "trf-001"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"fromAccountNo\": \"1122334455\",\n  \"toAccountNo\": \"5544332211\",\n  \"amount\": 100000,\n  \"pin\": \"483920\",\n  \"note\": \"Bayar makan\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/transfers",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"transfers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "5. Transfer ulang key sama (harus transferId sama)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Idempotency-Key",
+						"value": "trf-001"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"fromAccountNo\": \"1122334455\",\n  \"toAccountNo\": \"5544332211\",\n  \"amount\": 100000,\n  \"pin\": \"483920\",\n  \"note\": \"Bayar makan\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/transfers",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"transfers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "6. Transfer key sama, amount beda (harus 409)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Idempotency-Key",
+						"value": "trf-001"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"fromAccountNo\": \"1122334455\",\n  \"toAccountNo\": \"5544332211\",\n  \"amount\": 999000,\n  \"pin\": \"483920\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/transfers",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"transfers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "7. Transfer baru (key otomatis)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Idempotency-Key",
+						"value": "{{$guid}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"fromAccountNo\": \"5544332211\",\n  \"toAccountNo\": \"1122334455\",\n  \"amount\": 50000,\n  \"pin\": \"729164\",\n  \"note\": \"Kembalian\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/transfers",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"transfers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "8. Transfer PIN salah (400, 3x jadi LOCKED)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Idempotency-Key",
+						"value": "{{$guid}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"fromAccountNo\": \"5544332211\",\n  \"toAccountNo\": \"1122334455\",\n  \"amount\": 10000,\n  \"pin\": \"000111\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/transfers",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"transfers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "9. Transfer saldo tidak cukup (409)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Idempotency-Key",
+						"value": "{{$guid}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"fromAccountNo\": \"1122334455\",\n  \"toAccountNo\": \"5544332211\",\n  \"amount\": 999999999,\n  \"pin\": \"483920\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/transfers",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"transfers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "10. Get Info Account",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"accountNo\": \"1122334455\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/accounts",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"accounts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "11. Report ALL",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/reports/transfers?fromAccountNo=1122334455&type=ALL&from=2026-11-01&to=2026-11-30&page=0&size=20",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"reports",
+						"transfers"
+					],
+					"query": [
+						{
+							"key": "fromAccountNo",
+							"value": "1122334455"
+						},
+						{
+							"key": "type",
+							"value": "ALL"
+						},
+						{
+							"key": "from",
+							"value": "2026-11-01"
+						},
+						{
+							"key": "to",
+							"value": "2026-11-30"
+						},
+						{
+							"key": "page",
+							"value": "0"
+						},
+						{
+							"key": "size",
+							"value": "20"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "12. Report Debit (D)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/reports/transfers?fromAccountNo=1122334455&type=D&from=2026-11-01&to=2026-11-30&page=0&size=20",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"reports",
+						"transfers"
+					],
+					"query": [
+						{
+							"key": "fromAccountNo",
+							"value": "1122334455"
+						},
+						{
+							"key": "type",
+							"value": "D"
+						},
+						{
+							"key": "from",
+							"value": "2026-11-01"
+						},
+						{
+							"key": "to",
+							"value": "2026-11-30"
+						},
+						{
+							"key": "page",
+							"value": "0"
+						},
+						{
+							"key": "size",
+							"value": "20"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "13. Report Credit (C)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/reports/transfers?fromAccountNo=1122334455&type=C&from=2026-11-01&to=2026-11-30&page=0&size=20",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"reports",
+						"transfers"
+					],
+					"query": [
+						{
+							"key": "fromAccountNo",
+							"value": "1122334455"
+						},
+						{
+							"key": "type",
+							"value": "C"
+						},
+						{
+							"key": "from",
+							"value": "2026-11-01"
+						},
+						{
+							"key": "to",
+							"value": "2026-11-30"
+						},
+						{
+							"key": "page",
+							"value": "0"
+						},
+						{
+							"key": "size",
+							"value": "20"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "14. Report tanggal terbalik (harus 400)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/reports/transfers?fromAccountNo=1122334455&type=ALL&from=2026-11-30&to=2026-11-01",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"reports",
+						"transfers"
+					],
+					"query": [
+						{
+							"key": "fromAccountNo",
+							"value": "1122334455"
+						},
+						{
+							"key": "type",
+							"value": "ALL"
+						},
+						{
+							"key": "from",
+							"value": "2026-11-30"
+						},
+						{
+							"key": "to",
+							"value": "2026-11-01"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:9090"
+		}
+	]
+}
