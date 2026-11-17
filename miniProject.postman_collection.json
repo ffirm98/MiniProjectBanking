@@ -17,7 +17,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"accountNo\": \"1122334455\",\n  \"ownerName\": \"Budi Santoso\",\n  \"currency\": \"IDR\",\n  \"initialBalance\": 5000000,\n  \"pin\": \"483920\"\n}"
+					"raw": "{\n  \"accountNo\": \"1122334455\",\n  \"ownerName\": \"Fiky Firmansyah\",\n  \"currency\": \"IDR\",\n  \"initialBalance\": 5000000,\n  \"pin\": \"101098\"\n}"
 				},
 				"url": {
 					"raw": "{{baseUrl}}/createAccount",
@@ -94,12 +94,12 @@
 					},
 					{
 						"key": "Idempotency-Key",
-						"value": "trf-001"
+						"value": "trf-002"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"fromAccountNo\": \"1122334455\",\n  \"toAccountNo\": \"5544332211\",\n  \"amount\": 100000,\n  \"pin\": \"483920\",\n  \"note\": \"Bayar makan\"\n}"
+					"raw": "{\n  \"fromAccountNo\": \"1122334455\",\n  \"toAccountNo\": \"5544332211\",\n  \"amount\": 100000,\n  \"pin\": \"101098\",\n  \"note\": \"Bayar DP Baju\"\n}"
 				},
 				"url": {
 					"raw": "{{baseUrl}}/transfers",
@@ -129,7 +129,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"fromAccountNo\": \"1122334455\",\n  \"toAccountNo\": \"5544332211\",\n  \"amount\": 100000,\n  \"pin\": \"483920\",\n  \"note\": \"Bayar makan\"\n}"
+					"raw": "{\n  \"fromAccountNo\": \"1122334455\",\n  \"toAccountNo\": \"5544332211\",\n  \"amount\": 100000,\n  \"pin\": \"101098\",\n  \"note\": \"Bayar makan\"\n}"
 				},
 				"url": {
 					"raw": "{{baseUrl}}/transfers",
@@ -189,7 +189,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"fromAccountNo\": \"5544332211\",\n  \"toAccountNo\": \"1122334455\",\n  \"amount\": 50000,\n  \"pin\": \"729164\",\n  \"note\": \"Kembalian\"\n}"
+					"raw": "{\n  \"fromAccountNo\": \"5544332211\",\n  \"toAccountNo\": \"1122334455\",\n  \"amount\": 50000,\n  \"pin\": \"729164\",\n  \"note\": \"Kembalian DB BAJU\"\n}"
 				},
 				"url": {
 					"raw": "{{baseUrl}}/transfers",
@@ -249,7 +249,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"fromAccountNo\": \"1122334455\",\n  \"toAccountNo\": \"5544332211\",\n  \"amount\": 999999999,\n  \"pin\": \"483920\"\n}"
+					"raw": "{\n  \"fromAccountNo\": \"1122334455\",\n  \"toAccountNo\": \"5544332211\",\n  \"amount\": 999999999,\n  \"pin\": \"101098\"\n}"
 				},
 				"url": {
 					"raw": "{{baseUrl}}/transfers",
@@ -291,43 +291,28 @@
 		},
 		{
 			"name": "11. Report ALL",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
 			"request": {
 				"method": "GET",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"fromAccountNo\": \"1122334455\",\r\n  \"type\": \"ALL\",\r\n  \"from\": \"2026-11-01\",\r\n  \"to\": \"2026-11-30\",\r\n  \"page\": 0,\r\n  \"size\": 20\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
-					"raw": "{{baseUrl}}/reports/transfers?fromAccountNo=1122334455&type=ALL&from=2026-11-01&to=2026-11-30&page=0&size=20",
+					"raw": "{{baseUrl}}/report",
 					"host": [
 						"{{baseUrl}}"
 					],
 					"path": [
-						"reports",
-						"transfers"
-					],
-					"query": [
-						{
-							"key": "fromAccountNo",
-							"value": "1122334455"
-						},
-						{
-							"key": "type",
-							"value": "ALL"
-						},
-						{
-							"key": "from",
-							"value": "2026-11-01"
-						},
-						{
-							"key": "to",
-							"value": "2026-11-30"
-						},
-						{
-							"key": "page",
-							"value": "0"
-						},
-						{
-							"key": "size",
-							"value": "20"
-						}
+						"report"
 					]
 				}
 			},
@@ -335,43 +320,28 @@
 		},
 		{
 			"name": "12. Report Debit (D)",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
 			"request": {
 				"method": "GET",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"fromAccountNo\": \"1122334455\",\r\n  \"type\": \"D\",\r\n  \"from\": \"2026-11-01\",\r\n  \"to\": \"2026-11-30\",\r\n  \"page\": 0,\r\n  \"size\": 20\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
-					"raw": "{{baseUrl}}/reports/transfers?fromAccountNo=1122334455&type=D&from=2026-11-01&to=2026-11-30&page=0&size=20",
+					"raw": "{{baseUrl}}/report",
 					"host": [
 						"{{baseUrl}}"
 					],
 					"path": [
-						"reports",
-						"transfers"
-					],
-					"query": [
-						{
-							"key": "fromAccountNo",
-							"value": "1122334455"
-						},
-						{
-							"key": "type",
-							"value": "D"
-						},
-						{
-							"key": "from",
-							"value": "2026-11-01"
-						},
-						{
-							"key": "to",
-							"value": "2026-11-30"
-						},
-						{
-							"key": "page",
-							"value": "0"
-						},
-						{
-							"key": "size",
-							"value": "20"
-						}
+						"report"
 					]
 				}
 			},
@@ -379,43 +349,28 @@
 		},
 		{
 			"name": "13. Report Credit (C)",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
 			"request": {
 				"method": "GET",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"fromAccountNo\": \"1122334455\",\r\n  \"type\": \"C\",\r\n  \"from\": \"2026-11-01\",\r\n  \"to\": \"2026-11-30\",\r\n  \"page\": 0,\r\n  \"size\": 20\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
-					"raw": "{{baseUrl}}/reports/transfers?fromAccountNo=1122334455&type=C&from=2026-11-01&to=2026-11-30&page=0&size=20",
+					"raw": "{{baseUrl}}/report",
 					"host": [
 						"{{baseUrl}}"
 					],
 					"path": [
-						"reports",
-						"transfers"
-					],
-					"query": [
-						{
-							"key": "fromAccountNo",
-							"value": "1122334455"
-						},
-						{
-							"key": "type",
-							"value": "C"
-						},
-						{
-							"key": "from",
-							"value": "2026-11-01"
-						},
-						{
-							"key": "to",
-							"value": "2026-11-30"
-						},
-						{
-							"key": "page",
-							"value": "0"
-						},
-						{
-							"key": "size",
-							"value": "20"
-						}
+						"report"
 					]
 				}
 			},
@@ -423,35 +378,28 @@
 		},
 		{
 			"name": "14. Report tanggal terbalik (harus 400)",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
 			"request": {
 				"method": "GET",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"fromAccountNo\": \"1122334455\",\r\n  \"type\": \"ALL\",\r\n  \"from\": \"2026-11-30\",\r\n  \"to\": \"2026-11-01\",\r\n  \"page\": 0,\r\n  \"size\": 20\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
-					"raw": "{{baseUrl}}/reports/transfers?fromAccountNo=1122334455&type=ALL&from=2026-11-30&to=2026-11-01",
+					"raw": "{{baseUrl}}/report",
 					"host": [
 						"{{baseUrl}}"
 					],
 					"path": [
-						"reports",
-						"transfers"
-					],
-					"query": [
-						{
-							"key": "fromAccountNo",
-							"value": "1122334455"
-						},
-						{
-							"key": "type",
-							"value": "ALL"
-						},
-						{
-							"key": "from",
-							"value": "2026-11-30"
-						},
-						{
-							"key": "to",
-							"value": "2026-11-01"
-						}
+						"report"
 					]
 				}
 			},
